@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>مدیریت کسری کالا</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff;--card:#fff;--tx:#2a2a2a;--mut:#999;--bd:#f0e2e9;--pk:#c41d64;--pk2:#fdf1f6;--red:#c41d64;--org:#e0709f;--grn:#c41d64;--blu:#c41d64;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.7 Vazirmatn,Tahoma,sans-serif}
+header{background:var(--card);border-bottom:1px solid var(--bd);position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+.bar{max-width:1100px;margin:auto;padding:10px 14px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.bar h1{font-size:16px;margin:0 0 0 14px}
+.tab{border:0;background:none;color:var(--mut);padding:7px 12px;border-radius:8px;font:inherit;cursor:pointer}
+.tab.on{background:var(--pk);color:#fff}
+main{max-width:1100px;margin:auto;padding:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;animation:in .25s ease}
+@keyframes in{from{opacity:0;transform:translateY(6px)}}
+.stat b{display:block;font-size:26px;color:var(--pk)}.stat span{color:var(--mut);font-size:12px}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px}
+h2{font-size:14px;margin:0 0 8px;color:var(--pk)}
+.row{display:flex;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--bd);cursor:pointer}
+.row:first-of-type{border-top:0}.row .n{flex:1;min-width:0}.row small{color:var(--mut);display:block}
+.pill{border-radius:99px;padding:1px 9px;font-size:12px;color:#fff;white-space:nowrap}
+.u{background:var(--pk)}.m{background:#e0709f}.a{background:#f4c2d6;color:#7a1139}.l{background:#eee;color:#777}
+label{display:block;font-size:12px;color:var(--mut);margin:10px 0 3px}
+input,select,textarea{width:100%;padding:9px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx);font:inherit}
+.f2{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0 10px}
+.chk{display:flex;gap:14px;flex-wrap:wrap}.chk label{display:flex;gap:5px;align-items:center;margin:0;color:var(--tx);font-size:14px}.chk input{width:auto}
+button.p{background:var(--blu);color:#fff;border:0;border-radius:8px;padding:10px 18px;font:inherit;cursor:pointer}
+button.g{background:none;border:1px solid var(--bd);color:var(--pk);border-radius:8px;padding:8px 14px;font:inherit;cursor:pointer}
+button.d{color:var(--red)}
+.warn{background:var(--pk2);color:#7a1139;border:1px solid #f3c9da;border-radius:8px;padding:10px;margin-top:10px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}.filters>*{width:auto;flex:1 1 140px}
+.empty{color:var(--mut);text-align:center;padding:24px 8px}
+.bars{display:flex;align-items:flex-end;gap:8px;height:110px}.bars div{flex:1;text-align:center;font-size:11px;color:var(--mut)}.bars i{display:block;background:var(--blu);border-radius:4px 4px 0 0;min-height:2px}
+.modal{position:fixed;inset:0;background:#0008;display:flex;align-items:flex-start;justify-content:center;overflow:auto;padding:20px 10px;z-index:9}
+.modal .card{max-width:560px;width:100%}
+@media(max-width:600px){
+.bar{flex-wrap:nowrap;overflow-x:auto;gap:4px;padding:8px 10px}.bar h1{display:none}.tab{white-space:nowrap;padding:7px 9px;font-size:13px}#mg{white-space:nowrap;padding:5px 8px;font-size:13px}.empty{padding:10px}
+main{padding:10px}
+.grid{grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px}.card{padding:12px}.grid .card{padding:8px;text-align:center}.stat b{font-size:20px}.stat span{font-size:11px}
+.two{gap:8px}.card .row:nth-of-type(n+4){display:none}
+.f2{grid-template-columns:1fr 1fr;gap:0 8px}.f2:has(input[name=name]){grid-template-columns:1fr}
+input,select,textarea{font-size:16px;padding:11px}
+.chk label{padding:8px 12px;border:1px solid var(--bd);border-radius:99px}
+.filters>*{flex:1 1 100%}.filters select{flex:1 1 45%}.filters .chk{flex:1 1 45%}
+.row{padding:10px 0}.row small{font-size:12px}
+.modal{padding:0;align-items:stretch}.modal .card{border-radius:0;min-height:100%;max-width:none}
+button.p{width:100%;padding:13px}
+}
+.sc{display:flex;justify-content:space-between;font-size:12px;border-top:1px dashed var(--bd);padding:2px 0}
+#msg{position:fixed;bottom:16px;inset-inline:0;text-align:center;z-index:10;pointer-events:none}#msg span{background:var(--pk);color:#fff;padding:8px 16px;border-radius:99px}
+</style>
+</head>
+<body>
+<header><div class="bar"><h1>📦 مدیریت کسری کالا</h1>
+<button class="tab on" data-t="dash">داشبورد</button><button class="tab" data-t="new">ثبت کسری</button><button class="tab" data-t="list">فعال</button><button class="tab" data-t="rep">گزارش</button><button class="g" id="mg" style="margin-inline-start:auto;padding:5px 10px">🔒 ورود مدیر</button></div></header>
+<div id="st" style="text-align:center;color:var(--mut);font-size:12px;padding-top:6px"></div><main id="app"><div class="empty">در حال بارگذاری…</div></main>
+<div id="msg"></div>
+<script>
+const ST=["ثبت جدید","در انتظار بررسی مدیر","تأیید شده","در انتظار سفارش","سفارش داده شده","تأمین شده","فعلاً قابل تأمین نیست","رد شده"];
+const CLOSED=["تأمین شده","رد شده"];
+const LOCS=["داروخانه","دیجی‌کالا","داروبیست"];
+// وزن امتیازها (قابل تغییر): جمع = ۱۰۰
+const W={sales:20,demand:20,out:20,alt:15,imp:10,rep:10,mgr:5};
+const K="shortage_v1";function persist(){try{localStorage.setItem(K,JSON.stringify(R))}catch(e){msg("ذخیره‌سازی مرورگر در دسترس نیست")}}
+function askPw(){let first=true;try{first=!localStorage.getItem("mpw")}catch(e){}const m=document.createElement("div");m.className="modal";m.innerHTML=`<div class="card"><h2>${first?"تعیین رمز مدیر (اولین ورود)":"رمز مدیر"}</h2><input id="pw" type="password"><p><button class="p" id="po">تأیید</button> <button class="g" id="pc">لغو</button></p></div>`;document.body.append(m);$("#pw").focus();$("#pc").onclick=()=>m.remove();$("#po").onclick=()=>{const v=$("#pw").value;if(!v)return;try{if(first)localStorage.setItem("mpw",v);else if(v!==localStorage.getItem("mpw"))return msg("رمز اشتباه است")}catch(e){}isMgr=true;$("#mg").textContent="🔓 خروج مدیر";m.remove();msg("وارد بخش مدیریت شدید")}}
+let R=[],tab="dash",db=null,isMgr=false,loaded=false,F={q:"",loc:"",st:"",sort:"score",best:false,noalt:false},warnFor=null;
+const $=s=>document.querySelector(s),esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const norm=s=>String(s||"").replace(/[يی]/g,"ی").replace(/ك/g,"ک").replace(/\s+/g," ").trim().toLowerCase();
+const fd=t=>new Date(t).toLocaleDateString("fa-IR")+" "+new Date(t).toLocaleTimeString("fa-IR",{hour:"2-digit",minute:"2-digit"});
+const msg=t=>{$("#msg").innerHTML="<span>"+esc(t)+"</span>";setTimeout(()=>$("#msg").innerHTML="",2200)};
+const active=r=>!r.deleted&&!CLOSED.includes(r.status);
+function score(r){const n=norm(r.name),rep=R.filter(x=>x.id!==r.id&&!x.deleted&&norm(x.name)===n).length;
+const p=[["پرفروش بودن",{"پرفروش":1,"متوسط":.5}[r.sales]||0,W.sales],["درخواست مشتریان",{"زیاد":1,"متوسط":.5}[r.demand]||0,W.demand],["وضعیت موجودی",{"کاملاً تمام شده":1,"رو به اتمام":.5,"تعداد کمی باقی مانده":.25}[r.stock]||0,W.out],["نداشتن جایگزین",r.hasAlt==="خیر"?1:0,W.alt],["اهمیت از نظر کارمند",{"بسیار مهم":1,"مهم":.6}[r.imp]||.2,W.imp],["سابقه تکرار",Math.min(1,rep/2),W.rep],["اهمیت از نظر مدیر",(r.mgrImp||0)/5,W.mgr]].map(([l,f,m])=>[l,Math.round(f*m),m]);
+return{t:p.reduce((a,b)=>a+b[1],0),p}}
+const lvl=t=>t>=80?["بسیار فوری","u"]:t>=60?["مهم","m"]:t>=40?["متوسط","a"]:["معمولی","l"];
+const pill=r=>{const s=score(r).t,[n,c]=lvl(s);return`<span class="pill ${c}">${n} ${s.toLocaleString("fa")}</span>`};
+const num=n=>n.toLocaleString("fa");
+function rowH(r){return`<div class="row" data-id="${r.id}"><div class="n"><b>${esc(r.name)}</b> <small>${esc(r.brand||"")} · ${(r.locs||[]).join("، ")} · ${esc(r.stock)}</small></div>${pill(r)}</div>`}
+function listBox(t,a,e){return`<div class="card"><h2>${t}</h2>${a.length?a.slice(0,6).map(rowH).join(""):`<div class="empty">${e||"موردی نیست"}</div>`}</div>`}
+function render(){
+document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("on",b.dataset.t===tab));
+const A=R.filter(active),a=$("#app");
+if(tab==="dash"){
+const c=[["کسری فعال",A.length],["بسیار فوری",A.filter(r=>score(r).t>=80).length],["پرفروش ناموجود",A.filter(r=>r.sales==="پرفروش"&&r.stock==="کاملاً تمام شده").length],["درخواست جدید",A.filter(r=>r.status==="ثبت جدید").length],["در انتظار تأمین",A.filter(r=>["تأیید شده","در انتظار سفارش","سفارش داده شده"].includes(r.status)).length],["تأمین‌شده",R.filter(r=>!r.deleted&&r.status==="تأمین شده").length]];
+const days=[...Array(7)].map((_,i)=>{const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-6+i);return d}),cnt=days.map(d=>R.filter(r=>!r.deleted&&r.at>=+d&&r.at<+d+864e5).length),mx=Math.max(1,...cnt);
+const byN={};A.forEach(r=>{const k=norm(r.name);byN[k]=(byN[k]||0)+1});
+const top=[...A].sort((x,y)=>score(y).t-score(x).t);
+a.innerHTML=`<div class="grid">${c.map(x=>`<div class="card stat"><b>${num(x[1])}</b><span>${x[0]}</span></div>`).join("")}</div>
+<div class="two">${listBox("مهم‌ترین کسری‌ها",top,"هنوز کسری‌ای ثبت نشده است")}${listBox("آخرین درخواست‌ها",[...A].sort((x,y)=>y.at-x.at))}
+${listBox("پرفروش‌های ناموجود",top.filter(r=>r.sales==="پرفروش"&&r.stock==="کاملاً تمام شده"))}${listBox("بیش از ۷ روز تأمین‌نشده",A.filter(r=>Date.now()-r.at>6048e5).sort((x,y)=>x.at-y.at))}
+${listBox("کسری مکرر",A.filter(r=>byN[norm(r.name)]>1||score(r).p[5][1]>0))}
+<div class="card"><h2>کسری‌های ثبت‌شده در ۷ روز اخیر</h2><div class="bars">${cnt.map((n,i)=>`<div><i style="height:${n/mx*80}px"></i>${num(n)}<br>${days[i].toLocaleDateString("fa-IR",{weekday:"short"})}</div>`).join("")}</div></div></div>`}
+if(tab==="new"){
+const brands=[...new Set(R.map(r=>r.brand).filter(Boolean))],cats=[...new Set(R.map(r=>r.category).filter(Boolean))],me=localStorage.getItem("by")||"";
+const sel=(n,o,d)=>`<select name="${n}">${o.map(x=>`<option${x===d?" selected":""}>${x}</option>`).join("")}</select>`;
+a.innerHTML=`<form class="card" id="fm" onsubmit="return false"><h2>ثبت کسری جدید</h2>
+<div class="f2"><div><label>نام محصول *</label><input name="name" required autofocus></div><div><label>نام ثبت‌کننده *</label><input name="by" value="${esc(me)}" required></div></div>
+<label>محل کسری *</label><div class="chk">${LOCS.map(l=>`<label><input type="checkbox" name="locs" value="${l}">${l}</label>`).join("")}</div>
+<div class="f2"><div><label>وضعیت موجودی</label>${sel("stock",["کاملاً تمام شده","رو به اتمام","تعداد کمی باقی مانده"])}</div><div><label>میزان اهمیت</label>${sel("imp",["بسیار مهم","مهم","معمولی"],"مهم")}</div>
+<div><label>وضعیت فروش</label>${sel("sales",["پرفروش","متوسط","کم‌فروش"],"متوسط")}</div><div><label>درخواست مشتریان</label>${sel("demand",["زیاد","متوسط","کم"],"متوسط")}</div>
+<div><label>محصول جایگزین دارد؟</label>${sel("hasAlt",["بله","خیر"],"بله")}</div><div><label>باعث از‌دست‌رفتن فروش می‌شود؟</label>${sel("lost",["بله","خیر"],"خیر")}</div></div>
+<details style="margin-top:10px"><summary>اطلاعات اختیاری</summary><div class="f2"><div><label>برند</label><input name="brand" list="bl"></div><div><label>دسته‌بندی</label><input name="category" list="cl"></div><div><label>بارکد</label><input name="barcode"></div><div><label>تعداد تقریبی موردنیاز</label><input name="qty" type="number" min="0"></div></div><label>توضیحات</label><textarea name="note" rows="2"></textarea></details>
+<datalist id="bl">${brands.map(b=>`<option value="${esc(b)}">`).join("")}</datalist><datalist id="cl">${cats.map(b=>`<option value="${esc(b)}">`).join("")}</datalist>
+<div id="wr"></div><p><button class="p" id="sv">ثبت درخواست</button></p></form>`;
+$("#sv").onclick=()=>save(false)}
+if(tab==="list"){
+let L=R.filter(r=>!r.deleted&&active(r)),q=norm(F.q);
+L=L.filter(r=>(!q||norm(r.name+" "+r.brand+" "+r.barcode+" "+r.by).includes(q))&&(!F.loc||(r.locs||[]).includes(F.loc))&&(!F.st||r.status===F.st)&&(!F.best||r.sales==="پرفروش")&&(!F.noalt||r.hasAlt==="خیر"));
+L.sort((x,y)=>F.sort==="score"?score(y).t-score(x).t:F.sort==="new"?y.at-x.at:x.at-y.at);
+a.innerHTML=`<div class="filters"><input id="fq" placeholder="جستجوی نام، برند، بارکد، کارمند" value="${esc(F.q)}"><select id="fl"><option value="">همه محل‌ها</option>${LOCS.map(l=>`<option${F.loc===l?" selected":""}>${l}</option>`)}</select><select id="fs"><option value="">همه وضعیت‌ها</option>${ST.map(l=>`<option${F.st===l?" selected":""}>${l}</option>`)}</select><select id="fo"><option value="score"${F.sort==="score"?" selected":""}>بیشترین امتیاز</option><option value="new"${F.sort==="new"?" selected":""}>جدیدترین</option><option value="old"${F.sort==="old"?" selected":""}>قدیمی‌ترین</option></select>
+<label class="chk"><input type="checkbox" id="fb"${F.best?" checked":""}>پرفروش</label><label class="chk"><input type="checkbox" id="fn"${F.noalt?" checked":""}>بدون جایگزین</label></div>
+<div class="card">${L.length?L.map(rowH).join(""):`<div class="empty">${R.length?"موردی با این فیلتر پیدا نشد":"هنوز درخواستی ثبت نشده است. از «ثبت کسری» شروع کنید."}</div>`}</div>`;
+const bind=(id,k,ev,get)=>$(id).addEventListener(ev,e=>{F[k]=get(e.target);render();if(k==="q"){const i=$("#fq");i.focus();i.setSelectionRange(99,99)}});
+bind("#fq","q","input",e=>e.value);bind("#fl","loc","change",e=>e.value);bind("#fs","st","change",e=>e.value);bind("#fo","sort","change",e=>e.value);bind("#fb","best","change",e=>e.checked);bind("#fn","noalt","change",e=>e.checked)}
+if(tab==="rep"){
+const L=R.filter(r=>!r.deleted),grp=(f)=>{const m={};L.forEach(r=>[].concat(f(r)).forEach(k=>m[k]=(m[k]||0)+1));return Object.entries(m).map(([k,v])=>`<div class="sc"><span>${esc(k)}</span><b>${num(v)}</b></div>`).join("")||'<div class="empty">داده‌ای نیست</div>'};
+a.innerHTML=`<div class="two"><div class="card"><h2>به تفکیک محل</h2>${grp(r=>r.locs||[])}</div><div class="card"><h2>به تفکیک کارمند</h2>${grp(r=>r.by||"—")}</div><div class="card"><h2>به تفکیک وضعیت</h2>${grp(r=>r.status)}</div>
+<div class="card"><h2>خروجی و پشتیبان</h2><p><button class="g" id="ex">دریافت Excel (CSV)</button></p><p><button class="g" id="bk">فایل ارسال به مدیر (JSON)</button></p><p><label style="margin:0">دریافت فایل کارمندان و ادغام</label><input type="file" id="im" accept=".json" multiple></p><small style="color:var(--mut)">اطلاعات فقط روی همین کامپیوتر ذخیره می‌شود.</small></div></div>`;
+$("#ex").onclick=()=>dl("shortages.csv","\ufeff"+[["محصول","برند","بارکد","دسته","محل","موجودی","اهمیت","فروش","وضعیت","امتیاز","ثبت‌کننده","تاریخ"],...L.map(r=>[r.name,r.brand,r.barcode,r.category,(r.locs||[]).join("|"),r.stock,r.imp,r.sales,r.status,score(r).t,r.by,fd(r.at)])].map(x=>x.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(",")).join("\n"));
+$("#bk").onclick=()=>dl("shortages-"+(localStorage.getItem("by")||"backup")+".json",JSON.stringify(R,null,1));$("#im").onchange=async e=>{let n=0;for(const f of e.target.files){try{const a=JSON.parse(await f.text());for(const x of a){if(!x||!x.id||!x.name)continue;const o=R.find(r=>r.id===x.id);if(!o){R.push(x);n++}else if((x.history||[]).length>(o.history||[]).length){Object.assign(o,x);n++}}}catch(er){msg("فایل نامعتبر: "+f.name)}}persist();msg(n+" مورد اضافه یا به‌روز شد");render()}}}
+function dl(f,d){try{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([d],{type:"text/plain;charset=utf-8"}));a.download=f;document.body.append(a);a.click();a.remove()}catch(e){msg("ذخیره انجام نشد")}}
+async function save(force){
+const f=$("#fm"),g=n=>f.elements[n].value.trim(),locs=[...f.querySelectorAll("[name=locs]:checked")].map(x=>x.value);
+if(!g("name")||!g("by"))return msg("نام محصول و نام ثبت‌کننده را وارد کنید");if(!locs.length)return msg("حداقل یک محل کسری انتخاب کنید");
+const dup=R.find(r=>active(r)&&norm(r.name)===norm(g("name")));
+if(dup&&!force){$("#wr").innerHTML=`<div class="warn">این محصول قبلاً در تاریخ ${fd(dup.at)} ثبت شده است. <button type="button" class="g" id="vw">مشاهده درخواست قبلی</button> <button type="button" class="g" id="fo2">ثبت درخواست جدید</button></div>`;$("#vw").onclick=()=>detail(dup.id);$("#fo2").onclick=()=>save(true);return}
+localStorage.setItem("by",g("by"));
+const d={name:g("name"),by:g("by"),locs,stock:g("stock"),imp:g("imp"),sales:g("sales"),demand:g("demand"),hasAlt:g("hasAlt"),lost:g("lost"),brand:g("brand"),category:g("category"),barcode:g("barcode"),qty:g("qty"),note:g("note"),at:Date.now(),status:"ثبت جدید",mgrImp:0,mgrNote:"",history:[{t:Date.now(),x:"ثبت توسط "+g("by")}]};
+d.id="r"+Date.now()+Math.random().toString(36).slice(2,6);R.push(d);persist();msg("درخواست ثبت شد ✓");tab="dash";render()}
+function detail(id){const r=R.find(x=>x.id===id);if(!r)return;const s=score(r),m=document.createElement("div");m.className="modal";
+m.innerHTML=`<div class="card"><h2>${esc(r.name)} ${pill(r)}</h2><small>${esc(r.brand||"")} ${r.barcode?"· "+esc(r.barcode):""} ${r.category?"· "+esc(r.category):""}<br>${(r.locs||[]).join("، ")} · ثبت: ${esc(r.by)} · ${fd(r.at)}</small>
+<p>موجودی: ${esc(r.stock)} · جایگزین: ${r.hasAlt} · از دست رفتن فروش: ${r.lost||"—"} ${r.qty?"· نیاز: "+num(+r.qty):""}<br>${esc(r.note||"")}</p>
+<h2>دلیل امتیاز</h2>${s.p.map(p=>`<div class="sc"><span>${p[0]}</span><span>${num(p[1])} از ${num(p[2])}</span></div>`).join("")}
+<h2 style="margin-top:12px">وضعیت: ${esc(r.status)}</h2>${r.mgrNote?`<p>توضیح مدیر: ${esc(r.mgrNote)}</p>`:""}
+${isMgr?`<label>تغییر وضعیت</label><select id="ms">${ST.map(x=>`<option${x===r.status?" selected":""}>${x}</option>`)}</select><label>اهمیت از نظر مدیر (۰ تا ۵)</label><input id="mi" type="number" min="0" max="5" value="${r.mgrImp||0}"><label>توضیحات مدیر / دلیل رد</label><textarea id="mn" rows="2">${esc(r.mgrNote||"")}</textarea><p><button class="p" id="mv">ذخیره</button> <button class="g d" id="md">حذف</button></p>`:`<small>تغییر وضعیت فقط برای مدیر است.</small>`}
+<h2>تاریخچه</h2>${(r.history||[]).slice().reverse().map(h=>`<div class="sc"><span>${esc(h.x)}</span><span>${fd(h.t)}</span></div>`).join("")}
+<p><button class="g" id="mc">بستن</button></p></div>`;
+document.body.append(m);$("#mc").onclick=()=>m.remove();m.onclick=e=>{if(e.target===m)m.remove()};
+if(isMgr){$("#mv").onclick=async()=>{const st=$("#ms").value,h=(r.history||[]).slice();if(st!==r.status)h.push({t:Date.now(),x:"وضعیت: "+r.status+" ← "+st});
+Object.assign(r,{status:st,mgrImp:Math.max(0,Math.min(5,+$("#mi").value||0)),mgrNote:$("#mn").value.trim(),history:h});persist();m.remove();msg("ذخیره شد ✓");render()};
+$("#md").onclick=()=>{if($("#md").dataset.c!=="1"){$("#md").dataset.c="1";$("#md").textContent="مطمئنید؟ دوباره بزنید";return}Object.assign(r,{deleted:true,history:[...(r.history||[]),{t:Date.now(),x:"حذف شد"}]});persist();m.remove();render()}}}
+document.addEventListener("click",e=>{const t=e.target.closest(".tab");if(t){tab=t.dataset.t;render();return}const r=e.target.closest(".row");if(r)detail(r.dataset.id)});
+(async()=>{
+let live=false;loaded=true;render();$("#st").textContent="در حال اتصال به پایگاه داده…";const to=setTimeout(()=>{if(!live)$("#st").textContent="اتصال به پایگاه داده کند است. می‌توانید کار کنید؛ داده‌ها پس از اتصال همگام می‌شوند."},10000);
+try{R=JSON.parse(localStorage.getItem(K)||"[]")}catch(e){R=[]}db=true;
+if(!db){clearTimeout(to);$("#app").innerHTML='<div class="empty">برای استفاده باید وارد حساب شده و دسترسی مشارکت‌کننده (Contributor) داشته باشید.</div>';return}
+$("#mg").onclick=()=>{if(isMgr){isMgr=false;$("#mg").textContent="🔒 ورود مدیر";return render()}askPw()};live=true;clearTimeout(to);$("#st").textContent="";render();
+})();
+</script>
+</body>
+</html>
